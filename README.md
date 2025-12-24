@@ -1,17 +1,11 @@
 # Semantic Search - Android App
 
-English | [中文](README.zh.md) | [Français](README.fr.md)
+English | [Chinese](README.zh.md) | [French](README.fr.md)
 
 An Android semantic search app based on vector embeddings, providing fully offline semantic search over a local knowledge base.
 
 ## Features
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-## 技术架构
-=======
-=======
->>>>>>> b604a126c8fdbb3bc0d4e6bd702b63167ad745b6
 - **Semantic Search**: type a query and get the most semantically similar content
 - **Local Knowledge Base**: fully offline, stored in local SQLite (Room)
 - **Embeddings**: lightweight N-gram + hashing vectorization
@@ -21,16 +15,10 @@ An Android semantic search app based on vector embeddings, providing fully offli
 - **Folder Sync (SAF)**: pick a folder via Storage Access Framework and sync into the knowledge base
 - **PDF / DOCX Support**: extract text from PDF and Word (docx) and index it
 - **Embedding Space Visualization**: PCA (EJML) reduction to 2D scatter plot, highlighting newly upserted vectors
-<<<<<<< HEAD
 - **In-app Language Switch**: Chinese / English / French (AppCompat per-app locales)
 
-## Architecture
->>>>>>> Stashed changes
-=======
-- **In-app Language Switch**: 中文 / English / Français (AppCompat per-app locales)
 
 ## Architecture
->>>>>>> b604a126c8fdbb3bc0d4e6bd702b63167ad745b6
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -52,41 +40,27 @@ An Android semantic search app based on vector embeddings, providing fully offli
 │  │  - data access  - embedding generation  - search │    │
 │  └─────────────────────────────────────────────────┘    │
 ├─────────────────────────────────────────────────────────┤
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
 │                Indexing Layer (v2)                        │
 │  ┌─────────────────────────────────────────────────┐    │
 │  │           FileIndexingService                   │    │
-│  │  - scan/diff/incremental updates  - PDF/DOCX extraction│    │
+│  │  - scan/diff/incremental updates                │    │
+│  │  - PDF/DOCX extraction                          │    │
 │  └─────────────────────────────────────────────────┘    │
 │  ┌─────────────────────────────────────────────────┐    │
 │  │              ManifestStore (JSON)               │    │
-│  │  - index_manifest_v2.json maintains fingerprint ↔ ID map│    │
+│  │  - index_manifest_v2.json fingerprint ↔ ID map  │    │
 │  └─────────────────────────────────────────────────┘    │
 ├─────────────────────────────────────────────────────────┤
->>>>>>> Stashed changes
-=======
-│                Indexing Layer (v2)                        │
-│  ┌─────────────────────────────────────────────────┐    │
-│  │           FileIndexingService                   │    │
-│  │  - 扫描/比对/增量更新  - PDF/DOCX提取           │    │
-│  └─────────────────────────────────────────────────┘    │
-│  ┌─────────────────────────────────────────────────┐    │
-│  │              ManifestStore (JSON)               │    │
-│  │  - index_manifest_v2.json 维护文件指纹与ID映射  │    │
-│  └─────────────────────────────────────────────────┘    │
-├─────────────────────────────────────────────────────────┤
->>>>>>> b604a126c8fdbb3bc0d4e6bd702b63167ad745b6
-│                    Core Engines                          │
+│                    Core Engines                         │
 │  ┌──────────────────┐    ┌─────────────────────────┐    │
 │  │ EmbeddingEngine  │    │   VectorSearchEngine    │    │
-│  │ - N-gram tokens  │    │   - cosine similarity    │    │
-│  │ - hashing vector │    │   - K-NN search          │    │
-│  │ - L2 normalize   │    │   - in-memory index      │    │
+│  │ - N-gram tokens  │    │   - cosine similarity    │   │
+│  │ - hashing vector │    │   - K-NN search          │   │
+│  │ - L2 normalize   │    │   - in-memory index      │   │
+
 │  └──────────────────┘    └─────────────────────────┘    │
 ├─────────────────────────────────────────────────────────┤
-│                    Data Layer                            │
+│                    Data Layer                           │
 │  ┌──────────────────┐    ┌─────────────────────────┐    │
 │  │   Room Database  │    │      Document DAO       │    │
 │  │   (SQLite)       │    │                         │    │
@@ -187,15 +161,6 @@ app/src/main/java/com/semanticsearch/app/
 
 ## Usage
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-1. **添加文档**: 在"知识库"页面点击"添加文档"按钮
-2. **输入内容**: 填写文档标题和内容，点击保存
-3. **语义搜索**: 切换到"搜索"页面，输入查询文本
-4. **查看结果**: 系统会返回语义最相似的文档，并显示相似度百分比
-=======
-=======
->>>>>>> b604a126c8fdbb3bc0d4e6bd702b63167ad745b6
 1. **Add a document**: in “Knowledge Base”, tap “Add Document”
 2. **Enter content**: provide title and content, then save
 3. **Folder sync (SAF)**: in “Knowledge Base”, tap “Pick folder & sync”, then select a folder
@@ -205,12 +170,7 @@ app/src/main/java/com/semanticsearch/app/
 5. **Embedding visualization**: switch to “Visualization” to view PCA-reduced 2D scatter plot
    - gray points: existing vectors
    - highlighted points: newly upserted vectors (useful to demonstrate dynamic insertion/drift)
-<<<<<<< HEAD
 6. **Language**: tap the top “Language” button and switch between Chinese / English / French
->>>>>>> Stashed changes
-=======
-6. **Language**: tap the top “Language” button and switch between 中文 / English / Français
->>>>>>> b604a126c8fdbb3bc0d4e6bd702b63167ad745b6
 
 ## Extensions
 
@@ -232,3 +192,4 @@ If you need stronger semantic understanding, you can integrate a lightweight pre
 ## License
 
 MIT License
+
