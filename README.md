@@ -15,11 +15,8 @@ An Android semantic search app based on vector embeddings, providing fully offli
 - **Folder Sync (SAF)**: pick a folder via Storage Access Framework and sync into the knowledge base
 - **PDF / DOCX Support**: extract text from PDF and Word (docx) and index it
 - **Embedding Space Visualization**: PCA (EJML) reduction to 2D scatter plot, highlighting newly upserted vectors
-<<<<<<< Updated upstream
-- **In-app Language Switch**: 中文 / English / Français (AppCompat per-app locales)
-=======
 - **In-app Language Switch**: Chinese / English / French (AppCompat per-app locales)
->>>>>>> Stashed changes
+
 
 ## Architecture
 
@@ -40,27 +37,12 @@ An Android semantic search app based on vector embeddings, providing fully offli
 │                  Repository Layer                        │
 │  ┌─────────────────────────────────────────────────┐    │
 │  │           DocumentRepository                     │    │
-│  │  - 协调数据访问  - 嵌入生成  - 搜索执行         │    │
+│  │  - data access  - embedding generation  - search │    │
 │  └─────────────────────────────────────────────────┘    │
 ├─────────────────────────────────────────────────────────┤
 │                Indexing Layer (v2)                        │
 │  ┌─────────────────────────────────────────────────┐    │
 │  │           FileIndexingService                   │    │
-<<<<<<< Updated upstream
-│  │  - 扫描/比对/增量更新  - PDF/DOCX提取           │    │
-│  └─────────────────────────────────────────────────┘    │
-│  ┌─────────────────────────────────────────────────┐    │
-│  │              ManifestStore (JSON)               │    │
-│  │  - index_manifest_v2.json 维护文件指纹与ID映射  │    │
-│  └─────────────────────────────────────────────────┘    │
-├─────────────────────────────────────────────────────────┤
-│                    Core Engines                          │
-│  ┌──────────────────┐    ┌─────────────────────────┐    │
-│  │ EmbeddingEngine  │    │   VectorSearchEngine    │    │
-│  │ - N-gram分词     │    │   - 余弦相似度计算      │    │
-│  │ - 哈希向量化     │    │   - K-NN搜索            │    │
-│  │ - L2归一化       │    │   - 内存向量索引        │    │
-=======
 │  │  - scan/diff/incremental updates                │    │
 │  │  - PDF/DOCX extraction                          │    │
 │  └─────────────────────────────────────────────────┘    │
@@ -75,7 +57,7 @@ An Android semantic search app based on vector embeddings, providing fully offli
 │  │ - N-gram tokens  │    │   - cosine similarity    │   │
 │  │ - hashing vector │    │   - K-NN search          │   │
 │  │ - L2 normalize   │    │   - in-memory index      │   │
->>>>>>> Stashed changes
+
 │  └──────────────────┘    └─────────────────────────┘    │
 ├─────────────────────────────────────────────────────────┤
 │                    Data Layer                           │
@@ -103,7 +85,7 @@ An Android semantic search app based on vector embeddings, providing fully offli
 ### 2. K-NN Search (VectorSearchEngine)
 
 ```kotlin
-// 余弦相似度计算
+// cosine similarity
 cos(A, B) = (A · B) / (||A|| * ||B||)
 
 // search pipeline:
@@ -188,11 +170,7 @@ app/src/main/java/com/semanticsearch/app/
 5. **Embedding visualization**: switch to “Visualization” to view PCA-reduced 2D scatter plot
    - gray points: existing vectors
    - highlighted points: newly upserted vectors (useful to demonstrate dynamic insertion/drift)
-<<<<<<< Updated upstream
-6. **Language**: tap the top “Language” button and switch between 中文 / English / Français
-=======
 6. **Language**: tap the top “Language” button and switch between Chinese / English / French
->>>>>>> Stashed changes
 
 ## Extensions
 
