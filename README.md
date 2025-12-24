@@ -10,7 +10,22 @@
 - **K-NN搜索**: 使用余弦相似度进行K-最近邻搜索
 - **现代UI**: 采用Material Design 3和Jetpack Compose
 
+<<<<<<< Updated upstream
 ## 技术架构
+=======
+- **Semantic Search**: type a query and get the most semantically similar content
+- **Local Knowledge Base**: fully offline, stored in local SQLite (Room)
+- **Embeddings**: lightweight N-gram + hashing vectorization
+- **K-NN Search**: cosine similarity based nearest-neighbor search
+- **Modern UI**: Material Design 3 + Jetpack Compose
+- **Dynamic Incremental Indexing (v2)**: a manifest tracks file fingerprints ↔ vector IDs, enabling accurate add/update/delete sync
+- **Folder Sync (SAF)**: pick a folder via Storage Access Framework and sync into the knowledge base
+- **PDF / DOCX Support**: extract text from PDF and Word (docx) and index it
+- **Embedding Space Visualization**: PCA (EJML) reduction to 2D scatter plot, highlighting newly upserted vectors
+- **In-app Language Switch**: Chinese / English / French (AppCompat per-app locales)
+
+## Architecture
+>>>>>>> Stashed changes
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -28,15 +43,28 @@
 │                  Repository Layer                        │
 │  ┌─────────────────────────────────────────────────┐    │
 │  │           DocumentRepository                     │    │
-│  │  - 协调数据访问  - 嵌入生成  - 搜索执行         │    │
+│  │  - data access  - embedding generation  - search │    │
 │  └─────────────────────────────────────────────────┘    │
 ├─────────────────────────────────────────────────────────┤
+<<<<<<< Updated upstream
+=======
+│                Indexing Layer (v2)                        │
+│  ┌─────────────────────────────────────────────────┐    │
+│  │           FileIndexingService                   │    │
+│  │  - scan/diff/incremental updates  - PDF/DOCX extraction│    │
+│  └─────────────────────────────────────────────────┘    │
+│  ┌─────────────────────────────────────────────────┐    │
+│  │              ManifestStore (JSON)               │    │
+│  │  - index_manifest_v2.json maintains fingerprint ↔ ID map│    │
+│  └─────────────────────────────────────────────────┘    │
+├─────────────────────────────────────────────────────────┤
+>>>>>>> Stashed changes
 │                    Core Engines                          │
 │  ┌──────────────────┐    ┌─────────────────────────┐    │
 │  │ EmbeddingEngine  │    │   VectorSearchEngine    │    │
-│  │ - N-gram分词     │    │   - 余弦相似度计算      │    │
-│  │ - 哈希向量化     │    │   - K-NN搜索            │    │
-│  │ - L2归一化       │    │   - 内存向量索引        │    │
+│  │ - N-gram tokens  │    │   - cosine similarity    │    │
+│  │ - hashing vector │    │   - K-NN search          │    │
+│  │ - L2 normalize   │    │   - in-memory index      │    │
 │  └──────────────────┘    └─────────────────────────┘    │
 ├─────────────────────────────────────────────────────────┤
 │                    Data Layer                            │
@@ -64,7 +92,7 @@
 ### 2. K-NN搜索 (VectorSearchEngine)
 
 ```kotlin
-// 余弦相似度计算
+// cosine similarity
 cos(A, B) = (A · B) / (||A|| * ||B||)
 
 // 搜索流程:
@@ -133,10 +161,23 @@ cd SemanticSearch
 
 ## 使用说明
 
+<<<<<<< Updated upstream
 1. **添加文档**: 在"知识库"页面点击"添加文档"按钮
 2. **输入内容**: 填写文档标题和内容，点击保存
 3. **语义搜索**: 切换到"搜索"页面，输入查询文本
 4. **查看结果**: 系统会返回语义最相似的文档，并显示相似度百分比
+=======
+1. **Add a document**: in “Knowledge Base”, tap “Add Document”
+2. **Enter content**: provide title and content, then save
+3. **Folder sync (SAF)**: in “Knowledge Base”, tap “Pick folder & sync”, then select a folder
+   - supported extensions: `txt` / `md` / `pdf` / `docx`
+   - sync is incremental: add / update / delete are detected and applied
+4. **Search**: switch to “Search” and type your query
+5. **Embedding visualization**: switch to “Visualization” to view PCA-reduced 2D scatter plot
+   - gray points: existing vectors
+   - highlighted points: newly upserted vectors (useful to demonstrate dynamic insertion/drift)
+6. **Language**: tap the top “Language” button and switch between Chinese / English / French
+>>>>>>> Stashed changes
 
 ## 扩展建议
 
