@@ -1,18 +1,17 @@
-# 语义搜索 (Semantic Search) - Android应用
+# Semantic Search - Android App
 
-一个基于嵌入向量的智能推荐/搜索Android应用，实现本地知识库的语义搜索功能。
+English | [中文](README.zh.md) | [Français](README.fr.md)
 
-## 功能特性
+An Android semantic search app based on vector embeddings, providing fully offline semantic search over a local knowledge base.
 
-- **语义搜索**: 通过文本输入，快速搜索并返回语义最相似的内容
-- **本地知识库**: 完全离线运行，数据存储在本地SQLite数据库
-- **向量嵌入**: 基于N-gram和哈希技巧的轻量级文本向量化
-- **K-NN搜索**: 使用余弦相似度进行K-最近邻搜索
-- **现代UI**: 采用Material Design 3和Jetpack Compose
+## Features
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 ## 技术架构
 =======
+=======
+>>>>>>> b604a126c8fdbb3bc0d4e6bd702b63167ad745b6
 - **Semantic Search**: type a query and get the most semantically similar content
 - **Local Knowledge Base**: fully offline, stored in local SQLite (Room)
 - **Embeddings**: lightweight N-gram + hashing vectorization
@@ -22,22 +21,29 @@
 - **Folder Sync (SAF)**: pick a folder via Storage Access Framework and sync into the knowledge base
 - **PDF / DOCX Support**: extract text from PDF and Word (docx) and index it
 - **Embedding Space Visualization**: PCA (EJML) reduction to 2D scatter plot, highlighting newly upserted vectors
+<<<<<<< HEAD
 - **In-app Language Switch**: Chinese / English / French (AppCompat per-app locales)
 
 ## Architecture
 >>>>>>> Stashed changes
+=======
+- **In-app Language Switch**: 中文 / English / Français (AppCompat per-app locales)
+
+## Architecture
+>>>>>>> b604a126c8fdbb3bc0d4e6bd702b63167ad745b6
 
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                    UI Layer (Compose)                    │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐  │
-│  │ SearchScreen│  │KnowledgeBase│  │    Dialogs      │  │
+│  │ SearchScreen│  │KnowledgeBase│  │ Visualization   │  │
 │  └─────────────┘  └─────────────┘  └─────────────────┘  │
 ├─────────────────────────────────────────────────────────┤
 │                   ViewModel Layer                        │
 │  ┌─────────────────────────────────────────────────┐    │
 │  │              MainViewModel                       │    │
-│  │  - 搜索状态管理  - UI状态  - 文档CRUD操作       │    │
+│  │  - search/ui state  - CRUD documents             │    │
+│  │  - folder sync (SAF) - visualization refresh     │    │
 │  └─────────────────────────────────────────────────┘    │
 ├─────────────────────────────────────────────────────────┤
 │                  Repository Layer                        │
@@ -46,6 +52,7 @@
 │  │  - data access  - embedding generation  - search │    │
 │  └─────────────────────────────────────────────────┘    │
 ├─────────────────────────────────────────────────────────┤
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 │                Indexing Layer (v2)                        │
@@ -59,6 +66,18 @@
 │  └─────────────────────────────────────────────────┘    │
 ├─────────────────────────────────────────────────────────┤
 >>>>>>> Stashed changes
+=======
+│                Indexing Layer (v2)                        │
+│  ┌─────────────────────────────────────────────────┐    │
+│  │           FileIndexingService                   │    │
+│  │  - 扫描/比对/增量更新  - PDF/DOCX提取           │    │
+│  └─────────────────────────────────────────────────┘    │
+│  ┌─────────────────────────────────────────────────┐    │
+│  │              ManifestStore (JSON)               │    │
+│  │  - index_manifest_v2.json 维护文件指纹与ID映射  │    │
+│  └─────────────────────────────────────────────────┘    │
+├─────────────────────────────────────────────────────────┤
+>>>>>>> b604a126c8fdbb3bc0d4e6bd702b63167ad745b6
 │                    Core Engines                          │
 │  ┌──────────────────┐    ┌─────────────────────────┐    │
 │  │ EmbeddingEngine  │    │   VectorSearchEngine    │    │
@@ -75,98 +94,108 @@
 └─────────────────────────────────────────────────────────┘
 ```
 
-## 核心算法
+## Core Algorithms
 
-### 1. 文本嵌入向量生成 (EmbeddingEngine)
+### 1. Embedding Generation (EmbeddingEngine)
 
 ```kotlin
-// 向量维度: 256
-// 算法流程:
-1. 文本预处理 (小写化、去标点)
-2. 分词 (支持中英文混合)
-3. 生成N-gram (1-gram到3-gram)
-4. 使用哈希技巧映射到固定维度向量
-5. L2归一化
+// vector dimension: 256
+// pipeline:
+1. preprocessing (lowercasing, punctuation removal)
+2. tokenization (supports mixed Chinese/English)
+3. N-grams (1-gram to 3-gram)
+4. hashing into a fixed-dimension vector
+5. L2 normalization
 ```
 
-### 2. K-NN搜索 (VectorSearchEngine)
+### 2. K-NN Search (VectorSearchEngine)
 
 ```kotlin
 // cosine similarity
 cos(A, B) = (A · B) / (||A|| * ||B||)
 
-// 搜索流程:
-1. 计算查询向量与所有文档向量的相似度
-2. 过滤低于阈值的结果
-3. 按相似度降序排序
-4. 返回Top-K结果
+// search pipeline:
+1. compute similarity between query vector and all document vectors
+2. filter by threshold
+3. sort by similarity desc
+4. return Top-K
 ```
 
-## 项目结构
+## Project Structure
 
 ```
 app/src/main/java/com/semanticsearch/app/
-├── SemanticSearchApp.kt          # Application类
-├── MainActivity.kt               # 主Activity
+├── SemanticSearchApp.kt          # Application
+├── MainActivity.kt               # Main activity
 ├── data/
-│   ├── Document.kt              # 文档实体
-│   ├── DocumentDao.kt           # 数据访问接口
-│   └── AppDatabase.kt           # Room数据库
+│   ├── Document.kt              # Entity
+│   ├── DocumentDao.kt           # DAO
+│   └── AppDatabase.kt           # Room database
 ├── embedding/
-│   └── EmbeddingEngine.kt       # 嵌入向量生成引擎
+│   └── EmbeddingEngine.kt       # Embedding engine
 ├── search/
-│   └── VectorSearchEngine.kt    # 向量搜索引擎
+│   └── VectorSearchEngine.kt    # Vector search engine
+├── indexing/
+│   ├── FileIndexingService.kt    # Incremental indexing + SAF folder sync + PDF/DOCX extraction
+│   └── IndexManifest.kt          # Manifest model + JSON persistence
 ├── repository/
-│   └── DocumentRepository.kt    # 数据仓库
+│   └── DocumentRepository.kt    # Repository
 ├── viewmodel/
-│   └── MainViewModel.kt         # 视图模型
+│   └── MainViewModel.kt         # ViewModel
+├── visualization/
+│   └── Pca2DReducer.kt           # PCA reducer (EJML)
 └── ui/
-    ├── MainScreen.kt            # 主屏幕
-    ├── theme/                   # Material主题
+    ├── MainScreen.kt            # Root screen
+    ├── theme/                   # Material theme
     ├── screens/
-    │   ├── SearchScreen.kt      # 搜索界面
-    │   └── KnowledgeBaseScreen.kt # 知识库界面
+    │   ├── SearchScreen.kt      # Search screen
+    │   └── KnowledgeBaseScreen.kt # Knowledge base screen
     └── components/
-        └── Dialogs.kt           # 对话框组件
+        └── Dialogs.kt           # Dialog components
 ```
 
-## 依赖项
+## Dependencies
 
-- **Jetpack Compose**: 现代声明式UI框架
-- **Room**: SQLite抽象层
-- **Kotlin Coroutines**: 异步编程
-- **Material 3**: Material Design组件
-- **ONNX Runtime** (可选): 用于更高级的ML模型推理
+- **Jetpack Compose**: modern declarative UI
+- **Room**: SQLite abstraction
+- **Kotlin Coroutines**: async programming
+- **Material 3**: Material Design components
+- **AndroidX DocumentFile**: SAF folder traversal
+- **pdfbox-android**: PDF text extraction (requires `PDFBoxResourceLoader` init in `Application`)
+- **EJML**: PCA computation
+- **AppCompat**: in-app language switching (AppCompatDelegate per-app locales)
+- **ONNX Runtime** (optional): on-device model inference
 
-## 构建与运行
+## Build & Run
 
-### 环境要求
-- Android Studio Hedgehog (2023.1.1) 或更高版本
+### Requirements
+
+- Android Studio Hedgehog (2023.1.1) or newer
 - JDK 17
 - Android SDK 34
 - Gradle 8.2
 
-### 构建步骤
+### Build
 
 ```bash
-# 克隆项目后，使用Android Studio打开
-# 或使用命令行构建:
-
-cd SemanticSearch
+# Run from the project root
 ./gradlew assembleDebug
 
-# APK输出位置:
+# APK output:
 # app/build/outputs/apk/debug/app-debug.apk
 ```
 
-## 使用说明
+## Usage
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 1. **添加文档**: 在"知识库"页面点击"添加文档"按钮
 2. **输入内容**: 填写文档标题和内容，点击保存
 3. **语义搜索**: 切换到"搜索"页面，输入查询文本
 4. **查看结果**: 系统会返回语义最相似的文档，并显示相似度百分比
 =======
+=======
+>>>>>>> b604a126c8fdbb3bc0d4e6bd702b63167ad745b6
 1. **Add a document**: in “Knowledge Base”, tap “Add Document”
 2. **Enter content**: provide title and content, then save
 3. **Folder sync (SAF)**: in “Knowledge Base”, tap “Pick folder & sync”, then select a folder
@@ -176,26 +205,30 @@ cd SemanticSearch
 5. **Embedding visualization**: switch to “Visualization” to view PCA-reduced 2D scatter plot
    - gray points: existing vectors
    - highlighted points: newly upserted vectors (useful to demonstrate dynamic insertion/drift)
+<<<<<<< HEAD
 6. **Language**: tap the top “Language” button and switch between Chinese / English / French
 >>>>>>> Stashed changes
+=======
+6. **Language**: tap the top “Language” button and switch between 中文 / English / Français
+>>>>>>> b604a126c8fdbb3bc0d4e6bd702b63167ad745b6
 
-## 扩展建议
+## Extensions
 
-### 使用预训练模型提升效果
+### Improve quality with pretrained models
 
-如需更好的语义理解能力，可以集成轻量级预训练模型:
+If you need stronger semantic understanding, you can integrate a lightweight pretrained model:
 
-1. **MiniLM**: 小型BERT变体，适合移动端
-2. **DistilBERT**: 蒸馏版BERT
-3. **Sentence-BERT**: 专为句子嵌入设计
+1. **MiniLM**: a small BERT variant suitable for mobile
+2. **DistilBERT**: distilled BERT
+3. **Sentence-BERT**: sentence embedding models
 
 ```kotlin
-// 示例: 集成ONNX模型
-// 1. 下载模型文件 (如 all-MiniLM-L6-v2.onnx)
-// 2. 放置到 assets/ 目录
-// 3. 使用 ONNX Runtime 加载并推理
+// Example: integrate an ONNX model
+// 1. Download a model file (e.g., all-MiniLM-L6-v2.onnx)
+// 2. Put it under assets/
+// 3. Load and run with ONNX Runtime
 ```
 
-## 许可证
+## License
 
 MIT License
