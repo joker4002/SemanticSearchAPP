@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Semantic Search</string>
+    <string name="search_hint">Type to search...</string>
+    <string name="add_document">Add Document</string>
+    <string name="document_title">Title</string>
+    <string name="document_content">Content</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="no_results">No results found</string>
+    <string name="knowledge_base">Knowledge Base</string>
+    <string name="search">Search</string>
+    <string name="similarity">Similarity</string>
+
+    <string name="visualization">Visualization</string>
+    <string name="language">Language</string>
+    <string name="select_language">Select language</string>
+    <string name="language_zh">中文</string>
+    <string name="language_en">English</string>
+    <string name="language_fr">Français</string>
+
+    <string name="search_title">Semantic Search</string>
+    <string name="search_icon_desc">Search</string>
+    <string name="clear">Clear</string>
+    <string name="try_different_keywords">Try different keywords</string>
+    <string name="found_results">%1$d relevant results</string>
+    <string name="empty_search_title">Type keywords to start searching</string>
+    <string name="empty_search_subtitle">The system will return semantically similar content</string>
+
+    <string name="kb_document_count">%1$d documents</string>
+    <string name="sync_folder">Pick folder &amp; sync</string>
+    <string name="kb_empty_title">Knowledge base is empty</string>
+    <string name="kb_empty_subtitle">Use the button below to add documents</string>
+    <string name="load_sample_data">Load sample data</string>
+    <string name="confirm_delete">Confirm delete</string>
+    <string name="confirm_delete_text">Delete “%1$s”? This action can’t be undone.</string>
+    <string name="edit">Edit</string>
+    <string name="updated_at">Updated %1$s</string>
+
+    <string name="dialog_add_title">Add Document</string>
+    <string name="dialog_edit_title">Edit Document</string>
+    <string name="title_placeholder">Enter document title</string>
+    <string name="content_placeholder">Enter document content...</string>
+
+    <string name="viz_title">Embedding Visualization</string>
+    <string name="viz_legend">Gray = existing, Blue = newly upserted (tap a point to view)</string>
+    <string name="refresh">Refresh</string>
+    <string name="close">Close</string>
+
+    <string name="error_title_content_empty">Title and content cannot be empty</string>
+    <string name="doc_add_success">Document added</string>
+    <string name="doc_add_failed">Add failed: %1$s</string>
+    <string name="doc_update_success">Document updated</string>
+    <string name="doc_update_failed">Update failed: %1$s</string>
+    <string name="doc_deleted">Document deleted</string>
+    <string name="doc_delete_failed">Delete failed: %1$s</string>
+    <string name="sample_loaded">Sample data loaded</string>
+    <string name="sample_load_failed">Load failed: %1$s</string>
+    <string name="sync_complete">Sync done: added %1$d, updated %2$d, removed %3$d</string>
+    <string name="sync_failed">Sync failed: %1$s</string>
+</resources>

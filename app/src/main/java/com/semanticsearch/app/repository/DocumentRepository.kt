@@ -47,6 +47,20 @@ class DocumentRepository(
         
         id
     }
+
+    suspend fun addDocuments(documents: List<Document>): List<Long> = withContext(Dispatchers.IO) {
+        if (documents.isEmpty()) {
+            return@withContext emptyList()
+        }
+
+        val ids = documentDao.insertDocuments(documents)
+        val savedDocuments = documents.mapIndexed { index, doc ->
+            doc.copy(id = ids[index])
+        }
+
+        vectorSearchEngine.addVectors(savedDocuments)
+        ids
+    }
     
     /**
      * 更新文档
@@ -85,6 +99,15 @@ class DocumentRepository(
     suspend fun deleteDocumentById(id: Long) = withContext(Dispatchers.IO) {
         documentDao.deleteDocumentById(id)
         vectorSearchEngine.removeVector(id)
+    }
+
+    suspend fun deleteDocumentsByIds(ids: List<Long>) = withContext(Dispatchers.IO) {
+        if (ids.isEmpty()) {
+            return@withContext
+        }
+
+        documentDao.deleteDocumentsByIds(ids)
+        ids.forEach { vectorSearchEngine.removeVector(it) }
     }
     
     /**

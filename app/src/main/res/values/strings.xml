@@ -12,4 +12,51 @@
     <string name="knowledge_base">知识库</string>
     <string name="search">搜索</string>
     <string name="similarity">相似度</string>
+
+    <string name="visualization">可视化</string>
+    <string name="language">语言</string>
+    <string name="select_language">选择语言</string>
+    <string name="language_zh">中文</string>
+    <string name="language_en">English</string>
+    <string name="language_fr">Français</string>
+
+    <string name="search_title">语义搜索</string>
+    <string name="search_icon_desc">搜索</string>
+    <string name="clear">清除</string>
+    <string name="try_different_keywords">尝试使用不同的关键词</string>
+    <string name="found_results">找到 %1$d 个相关结果</string>
+    <string name="empty_search_title">输入关键词开始搜索</string>
+    <string name="empty_search_subtitle">系统将返回语义最相似的内容</string>
+
+    <string name="kb_document_count">共 %1$d 个文档</string>
+    <string name="sync_folder">选择文件夹并同步</string>
+    <string name="kb_empty_title">知识库为空</string>
+    <string name="kb_empty_subtitle">点击下方按钮添加文档</string>
+    <string name="load_sample_data">加载示例数据</string>
+    <string name="confirm_delete">确认删除</string>
+    <string name="confirm_delete_text">确定要删除「%1$s」吗？此操作无法撤销。</string>
+    <string name="edit">编辑</string>
+    <string name="updated_at">更新于 %1$s</string>
+
+    <string name="dialog_add_title">添加文档</string>
+    <string name="dialog_edit_title">编辑文档</string>
+    <string name="title_placeholder">输入文档标题</string>
+    <string name="content_placeholder">输入文档内容...</string>
+
+    <string name="viz_title">Embedding 可视化</string>
+    <string name="viz_legend">灰色=旧向量，蓝色=本次新增/更新向量（点击点查看内容）</string>
+    <string name="refresh">刷新</string>
+    <string name="close">关闭</string>
+
+    <string name="error_title_content_empty">标题和内容不能为空</string>
+    <string name="doc_add_success">文档添加成功</string>
+    <string name="doc_add_failed">添加失败: %1$s</string>
+    <string name="doc_update_success">文档更新成功</string>
+    <string name="doc_update_failed">更新失败: %1$s</string>
+    <string name="doc_deleted">文档已删除</string>
+    <string name="doc_delete_failed">删除失败: %1$s</string>
+    <string name="sample_loaded">示例数据加载成功</string>
+    <string name="sample_load_failed">加载失败: %1$s</string>
+    <string name="sync_complete">同步完成: 新增文件%1$d, 更新文件%2$d, 删除文件%3$d</string>
+    <string name="sync_failed">同步失败: %1$s</string>
 </resources>

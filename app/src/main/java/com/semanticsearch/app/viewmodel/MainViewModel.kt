@@ -3,14 +3,24 @@ package com.semanticsearch.app.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import android.net.Uri
 import com.semanticsearch.app.data.Document
 import com.semanticsearch.app.data.SampleData
 import com.semanticsearch.app.data.SearchResult
+import com.semanticsearch.app.indexing.FileIndexingService
 import com.semanticsearch.app.repository.DocumentRepository
+import com.semanticsearch.app.visualization.EmbeddingPoint
+import com.semanticsearch.app.visualization.Pca2DReducer
+import com.semanticsearch.app.R
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val repository: DocumentRepository) : ViewModel() {
+class MainViewModel(
+    private val repository: DocumentRepository,
+    private val fileIndexingService: FileIndexingService
+) : ViewModel() {
+
+    private val pca2DReducer = Pca2DReducer()
     
     // UI状态
     private val _uiState = MutableStateFlow(MainUiState())
@@ -19,6 +29,9 @@ class MainViewModel(private val repository: DocumentRepository) : ViewModel() {
     // 所有文档
     val allDocuments: StateFlow<List<Document>> = repository.allDocuments
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+
+    private val _embeddingPoints = MutableStateFlow<List<EmbeddingPoint>>(emptyList())
+    val embeddingPoints: StateFlow<List<EmbeddingPoint>> = _embeddingPoints.asStateFlow()
     
     // 搜索结果
     private val _searchResults = MutableStateFlow<List<SearchResult>>(emptyList())
@@ -41,6 +54,26 @@ class MainViewModel(private val repository: DocumentRepository) : ViewModel() {
                         _searchResults.value = emptyList()
                     }
                 }
+        }
+
+        viewModelScope.launch {
+            allDocuments.collect { docs ->
+                refreshEmbeddingVisualization(docs)
+            }
+        }
+    }
+
+    private suspend fun refreshEmbeddingVisualization(documents: List<Document>) {
+        try {
+            _embeddingPoints.value = pca2DReducer.reduce(documents)
+        } catch (_: Throwable) {
+            _embeddingPoints.value = emptyList()
+        }
+    }
+
+    fun refreshEmbeddingVisualization() {
+        viewModelScope.launch {
+            refreshEmbeddingVisualization(allDocuments.value)
         }
     }
     
@@ -72,7 +105,13 @@ class MainViewModel(private val repository: DocumentRepository) : ViewModel() {
      */
     fun addDocument(title: String, content: String) {
         if (title.isBlank() || content.isBlank()) {
-            _uiState.update { it.copy(error = "标题和内容不能为空") }
+            _uiState.update {
+                it.copy(
+                    error = null,
+                    errorResId = R.string.error_title_content_empty,
+                    errorArgs = emptyList()
+                )
+            }
             return
         }
         
@@ -80,10 +119,24 @@ class MainViewModel(private val repository: DocumentRepository) : ViewModel() {
             _uiState.update { it.copy(isLoading = true) }
             
             try {
-                repository.addDocument(title, content)
-                _uiState.update { it.copy(showAddDialog = false, message = "文档添加成功") }
+                val id = repository.addDocument(title, content)
+                _uiState.update { it.copy(highlightedDocumentIds = setOf(id)) }
+                _uiState.update {
+                    it.copy(
+                        showAddDialog = false,
+                        message = null,
+                        messageResId = R.string.doc_add_success,
+                        messageArgs = emptyList()
+                    )
+                }
             } catch (e: Exception) {
-                _uiState.update { it.copy(error = "添加失败: ${e.message}") }
+                _uiState.update {
+                    it.copy(
+                        error = null,
+                        errorResId = R.string.doc_add_failed,
+                        errorArgs = listOf(e.message ?: "")
+                    )
+                }
             } finally {
                 _uiState.update { it.copy(isLoading = false) }
             }
@@ -95,7 +148,13 @@ class MainViewModel(private val repository: DocumentRepository) : ViewModel() {
      */
     fun updateDocument(id: Long, title: String, content: String) {
         if (title.isBlank() || content.isBlank()) {
-            _uiState.update { it.copy(error = "标题和内容不能为空") }
+            _uiState.update {
+                it.copy(
+                    error = null,
+                    errorResId = R.string.error_title_content_empty,
+                    errorArgs = emptyList()
+                )
+            }
             return
         }
         
@@ -104,9 +163,23 @@ class MainViewModel(private val repository: DocumentRepository) : ViewModel() {
             
             try {
                 repository.updateDocument(id, title, content)
-                _uiState.update { it.copy(editingDocument = null, message = "文档更新成功") }
+                _uiState.update { it.copy(highlightedDocumentIds = setOf(id)) }
+                _uiState.update {
+                    it.copy(
+                        editingDocument = null,
+                        message = null,
+                        messageResId = R.string.doc_update_success,
+                        messageArgs = emptyList()
+                    )
+                }
             } catch (e: Exception) {
-                _uiState.update { it.copy(error = "更新失败: ${e.message}") }
+                _uiState.update {
+                    it.copy(
+                        error = null,
+                        errorResId = R.string.doc_update_failed,
+                        errorArgs = listOf(e.message ?: "")
+                    )
+                }
             } finally {
                 _uiState.update { it.copy(isLoading = false) }
             }
@@ -120,9 +193,22 @@ class MainViewModel(private val repository: DocumentRepository) : ViewModel() {
         viewModelScope.launch {
             try {
                 repository.deleteDocument(document)
-                _uiState.update { it.copy(message = "文档已删除") }
+                _uiState.update { it.copy(highlightedDocumentIds = emptySet()) }
+                _uiState.update {
+                    it.copy(
+                        message = null,
+                        messageResId = R.string.doc_deleted,
+                        messageArgs = emptyList()
+                    )
+                }
             } catch (e: Exception) {
-                _uiState.update { it.copy(error = "删除失败: ${e.message}") }
+                _uiState.update {
+                    it.copy(
+                        error = null,
+                        errorResId = R.string.doc_delete_failed,
+                        errorArgs = listOf(e.message ?: "")
+                    )
+                }
             }
         }
     }
@@ -159,14 +245,14 @@ class MainViewModel(private val repository: DocumentRepository) : ViewModel() {
      * 清除错误
      */
     fun clearError() {
-        _uiState.update { it.copy(error = null) }
+        _uiState.update { it.copy(error = null, errorResId = null, errorArgs = emptyList()) }
     }
     
     /**
      * 清除消息
      */
     fun clearMessage() {
-        _uiState.update { it.copy(message = null) }
+        _uiState.update { it.copy(message = null, messageResId = null, messageArgs = emptyList()) }
     }
     
     /**
@@ -187,9 +273,48 @@ class MainViewModel(private val repository: DocumentRepository) : ViewModel() {
                 SampleData.sampleDocuments.forEach { (title, content) ->
                     repository.addDocument(title, content)
                 }
-                _uiState.update { it.copy(message = "示例数据加载成功") }
+                _uiState.update {
+                    it.copy(
+                        message = null,
+                        messageResId = R.string.sample_loaded,
+                        messageArgs = emptyList()
+                    )
+                }
             } catch (e: Exception) {
-                _uiState.update { it.copy(error = "加载失败: ${e.message}") }
+                _uiState.update {
+                    it.copy(
+                        error = null,
+                        errorResId = R.string.sample_load_failed,
+                        errorArgs = listOf(e.message ?: "")
+                    )
+                }
+            } finally {
+                _uiState.update { it.copy(isLoading = false) }
+            }
+        }
+    }
+
+    fun syncKnowledgeBaseFolder(treeUri: Uri) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+            try {
+                val result = fileIndexingService.syncFolder(treeUri)
+                _uiState.update { it.copy(highlightedDocumentIds = result.upsertedDocumentIds.toSet()) }
+                _uiState.update {
+                    it.copy(
+                        message = null,
+                        messageResId = R.string.sync_complete,
+                        messageArgs = listOf(result.addedFiles, result.updatedFiles, result.removedFiles)
+                    )
+                }
+            } catch (e: Throwable) {
+                _uiState.update {
+                    it.copy(
+                        error = null,
+                        errorResId = R.string.sync_failed,
+                        errorArgs = listOf(e.message ?: "")
+                    )
+                }
             } finally {
                 _uiState.update { it.copy(isLoading = false) }
             }
@@ -203,20 +328,29 @@ data class MainUiState(
     val showAddDialog: Boolean = false,
     val editingDocument: Document? = null,
     val currentScreen: Screen = Screen.Search,
+    val highlightedDocumentIds: Set<Long> = emptySet(),
     val error: String? = null,
-    val message: String? = null
+    val message: String? = null,
+    val messageResId: Int? = null,
+    val messageArgs: List<Any> = emptyList(),
+    val errorResId: Int? = null,
+    val errorArgs: List<Any> = emptyList()
 )
 
 enum class Screen {
     Search,
-    KnowledgeBase
+    KnowledgeBase,
+    Visualization
 }
 
-class MainViewModelFactory(private val repository: DocumentRepository) : ViewModelProvider.Factory {
+class MainViewModelFactory(
+    private val repository: DocumentRepository,
+    private val fileIndexingService: FileIndexingService
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return MainViewModel(repository) as T
+            return MainViewModel(repository, fileIndexingService) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
