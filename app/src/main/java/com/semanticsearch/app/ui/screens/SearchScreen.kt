@@ -11,8 +11,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.semanticsearch.app.R
 import com.semanticsearch.app.data.SearchResult
 import kotlin.math.roundToInt
 
@@ -32,7 +34,7 @@ fun SearchScreen(
     ) {
         // 搜索标题
         Text(
-            text = "语义搜索",
+            text = stringResource(id = R.string.search_title),
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(bottom = 16.dp)
@@ -43,14 +45,14 @@ fun SearchScreen(
             value = searchQuery,
             onValueChange = onSearchQueryChange,
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text("输入搜索内容...") },
+            placeholder = { Text(stringResource(id = R.string.search_hint)) },
             leadingIcon = {
-                Icon(Icons.Default.Search, contentDescription = "搜索")
+                Icon(Icons.Default.Search, contentDescription = stringResource(id = R.string.search_icon_desc))
             },
             trailingIcon = {
                 if (searchQuery.isNotEmpty()) {
                     IconButton(onClick = { onSearchQueryChange("") }) {
-                        Icon(Icons.Default.Clear, contentDescription = "清除")
+                        Icon(Icons.Default.Clear, contentDescription = stringResource(id = R.string.clear))
                     }
                 }
             },
@@ -87,12 +89,12 @@ fun SearchScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "未找到相关内容",
+                            text = stringResource(id = R.string.no_results),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            text = "尝试使用不同的关键词",
+                            text = stringResource(id = R.string.try_different_keywords),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -101,7 +103,7 @@ fun SearchScreen(
             } else {
                 // 结果数量
                 Text(
-                    text = "找到 ${searchResults.size} 个相关结果",
+                    text = stringResource(id = R.string.found_results, searchResults.size),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(bottom = 8.dp)
@@ -139,12 +141,12 @@ fun SearchScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "输入关键词开始搜索",
+                        text = stringResource(id = R.string.empty_search_title),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text = "系统将返回语义最相似的内容",
+                        text = stringResource(id = R.string.empty_search_subtitle),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                     )

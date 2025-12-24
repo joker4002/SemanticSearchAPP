@@ -53,6 +53,7 @@ android {
 dependencies {
     // Core Android
     implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.8.1")
     
@@ -80,6 +81,12 @@ dependencies {
     
     // Gson for JSON
     implementation("com.google.code.gson:gson:2.10.1")
+
+    implementation("androidx.documentfile:documentfile:1.0.1")
+
+    implementation("com.tom-roush:pdfbox-android:2.0.27.0")
+
+    implementation("org.ejml:ejml-simple:0.43.1")
     
     // Testing
     testImplementation("junit:junit:4.13.2")

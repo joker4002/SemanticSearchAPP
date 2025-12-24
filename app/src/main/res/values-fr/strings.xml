@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Recherche Sémantique</string>
+    <string name="search_hint">Saisir pour rechercher...</string>
+    <string name="add_document">Ajouter un document</string>
+    <string name="document_title">Titre</string>
+    <string name="document_content">Contenu</string>
+    <string name="save">Enregistrer</string>
+    <string name="cancel">Annuler</string>
+    <string name="delete">Supprimer</string>
+    <string name="no_results">Aucun résultat</string>
+    <string name="knowledge_base">Base de connaissances</string>
+    <string name="search">Rechercher</string>
+    <string name="similarity">Similarité</string>
+
+    <string name="visualization">Visualisation</string>
+    <string name="language">Langue</string>
+    <string name="select_language">Choisir la langue</string>
+    <string name="language_zh">中文</string>
+    <string name="language_en">English</string>
+    <string name="language_fr">Français</string>
+
+    <string name="search_title">Recherche sémantique</string>
+    <string name="search_icon_desc">Rechercher</string>
+    <string name="clear">Effacer</string>
+    <string name="try_different_keywords">Essayez d’autres mots-clés</string>
+    <string name="found_results">%1$d résultats pertinents</string>
+    <string name="empty_search_title">Saisissez des mots-clés pour commencer</string>
+    <string name="empty_search_subtitle">Le système renverra du contenu sémantiquement similaire</string>
+
+    <string name="kb_document_count">%1$d documents</string>
+    <string name="sync_folder">Choisir un dossier et synchroniser</string>
+    <string name="kb_empty_title">La base est vide</string>
+    <string name="kb_empty_subtitle">Utilisez le bouton ci-dessous pour ajouter des documents</string>
+    <string name="load_sample_data">Charger des exemples</string>
+    <string name="confirm_delete">Confirmer la suppression</string>
+    <string name="confirm_delete_text">Supprimer « %1$s » ? Cette action est irréversible.</string>
+    <string name="edit">Modifier</string>
+    <string name="updated_at">Mis à jour %1$s</string>
+
+    <string name="dialog_add_title">Ajouter un document</string>
+    <string name="dialog_edit_title">Modifier le document</string>
+    <string name="title_placeholder">Saisir le titre du document</string>
+    <string name="content_placeholder">Saisir le contenu du document...</string>
+
+    <string name="viz_title">Visualisation des embeddings</string>
+    <string name="viz_legend">Gris = existant, Bleu = nouvel ajout/mise à jour (tapez un point)</string>
+    <string name="refresh">Rafraîchir</string>
+    <string name="close">Fermer</string>
+
+    <string name="error_title_content_empty">Le titre et le contenu ne peuvent pas être vides</string>
+    <string name="doc_add_success">Document ajouté</string>
+    <string name="doc_add_failed">Échec de l’ajout : %1$s</string>
+    <string name="doc_update_success">Document mis à jour</string>
+    <string name="doc_update_failed">Échec de la mise à jour : %1$s</string>
+    <string name="doc_deleted">Document supprimé</string>
+    <string name="doc_delete_failed">Échec de la suppression : %1$s</string>
+    <string name="sample_loaded">Exemples chargés</string>
+    <string name="sample_load_failed">Échec du chargement : %1$s</string>
+    <string name="sync_complete">Synchronisation terminée : ajoutés %1$d, mis à jour %2$d, supprimés %3$d</string>
+    <string name="sync_failed">Échec de la synchronisation : %1$s</string>
+</resources>

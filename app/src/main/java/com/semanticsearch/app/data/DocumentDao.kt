@@ -20,6 +20,9 @@ interface DocumentDao {
     
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDocument(document: Document): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertDocuments(documents: List<Document>): List<Long>
     
     @Update
     suspend fun updateDocument(document: Document)
@@ -29,6 +32,9 @@ interface DocumentDao {
     
     @Query("DELETE FROM documents WHERE id = :id")
     suspend fun deleteDocumentById(id: Long)
+
+    @Query("DELETE FROM documents WHERE id IN (:ids)")
+    suspend fun deleteDocumentsByIds(ids: List<Long>)
     
     @Query("SELECT COUNT(*) FROM documents")
     suspend fun getDocumentCount(): Int

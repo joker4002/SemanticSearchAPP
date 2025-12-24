@@ -6,9 +6,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.semanticsearch.app.R
 import com.semanticsearch.app.data.Document
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,7 +43,7 @@ fun AddDocumentDialog(
                     .padding(24.dp)
             ) {
                 Text(
-                    text = "添加文档",
+                    text = stringResource(id = R.string.dialog_add_title),
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -56,8 +58,8 @@ fun AddDocumentDialog(
                     OutlinedTextField(
                         value = title,
                         onValueChange = { title = it },
-                        label = { Text("标题") },
-                        placeholder = { Text("输入文档标题") },
+                        label = { Text(stringResource(id = R.string.document_title)) },
+                        placeholder = { Text(stringResource(id = R.string.title_placeholder)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
                         enabled = !isLoading
@@ -68,8 +70,8 @@ fun AddDocumentDialog(
                     OutlinedTextField(
                         value = content,
                         onValueChange = { content = it },
-                        label = { Text("内容") },
-                        placeholder = { Text("输入文档内容...") },
+                        label = { Text(stringResource(id = R.string.document_content)) },
+                        placeholder = { Text(stringResource(id = R.string.content_placeholder)) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(300.dp),
@@ -87,7 +89,7 @@ fun AddDocumentDialog(
                         onClick = onDismiss,
                         enabled = !isLoading
                     ) {
-                        Text("取消")
+                        Text(stringResource(id = R.string.cancel))
                     }
                     
                     Spacer(modifier = Modifier.width(8.dp))
@@ -104,7 +106,7 @@ fun AddDocumentDialog(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                         }
-                        Text("保存")
+                        Text(stringResource(id = R.string.save))
                     }
                 }
             }
@@ -143,7 +145,7 @@ fun EditDocumentDialog(
                     .padding(24.dp)
             ) {
                 Text(
-                    text = "编辑文档",
+                    text = stringResource(id = R.string.dialog_edit_title),
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -158,7 +160,7 @@ fun EditDocumentDialog(
                     OutlinedTextField(
                         value = title,
                         onValueChange = { title = it },
-                        label = { Text("标题") },
+                        label = { Text(stringResource(id = R.string.document_title)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
                         enabled = !isLoading
@@ -169,7 +171,7 @@ fun EditDocumentDialog(
                     OutlinedTextField(
                         value = content,
                         onValueChange = { content = it },
-                        label = { Text("内容") },
+                        label = { Text(stringResource(id = R.string.document_content)) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(300.dp),
@@ -187,7 +189,7 @@ fun EditDocumentDialog(
                         onClick = onDismiss,
                         enabled = !isLoading
                     ) {
-                        Text("取消")
+                        Text(stringResource(id = R.string.cancel))
                     }
                     
                     Spacer(modifier = Modifier.width(8.dp))
@@ -204,7 +206,7 @@ fun EditDocumentDialog(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                         }
-                        Text("保存")
+                        Text(stringResource(id = R.string.save))
                     }
                 }
             }

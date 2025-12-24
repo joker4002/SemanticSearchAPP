@@ -13,8 +13,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.semanticsearch.app.R
 import com.semanticsearch.app.data.Document
 import com.semanticsearch.app.data.SampleData
 import java.text.SimpleDateFormat
@@ -26,7 +28,8 @@ fun KnowledgeBaseScreen(
     onAddClick: () -> Unit,
     onEditClick: (Document) -> Unit,
     onDeleteClick: (Document) -> Unit,
-    onLoadSampleData: (() -> Unit)? = null
+    onLoadSampleData: (() -> Unit)? = null,
+    onSyncFolderClick: (() -> Unit)? = null
 ) {
     var documentToDelete by remember { mutableStateOf<Document?>(null) }
     
@@ -34,8 +37,8 @@ fun KnowledgeBaseScreen(
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = onAddClick,
-                icon = { Icon(Icons.Default.Add, contentDescription = "添加") },
-                text = { Text("添加文档") }
+                icon = { Icon(Icons.Default.Add, contentDescription = stringResource(id = R.string.add_document)) },
+                text = { Text(stringResource(id = R.string.add_document)) }
             )
         }
     ) { paddingValues ->
@@ -47,7 +50,7 @@ fun KnowledgeBaseScreen(
         ) {
             // 标题
             Text(
-                text = "知识库",
+                text = stringResource(id = R.string.knowledge_base),
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(bottom = 8.dp)
@@ -55,11 +58,20 @@ fun KnowledgeBaseScreen(
             
             // 文档数量
             Text(
-                text = "共 ${documents.size} 个文档",
+                text = stringResource(id = R.string.kb_document_count, documents.size),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
+
+            onSyncFolderClick?.let { sync ->
+                OutlinedButton(
+                    onClick = sync,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                ) {
+                    Text(stringResource(id = R.string.sync_folder))
+                }
+            }
             
             if (documents.isEmpty()) {
                 // 空状态
@@ -80,12 +92,12 @@ fun KnowledgeBaseScreen(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = "知识库为空",
+                            text = stringResource(id = R.string.kb_empty_title),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            text = "点击下方按钮添加文档",
+                            text = stringResource(id = R.string.kb_empty_subtitle),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                         )
@@ -94,7 +106,7 @@ fun KnowledgeBaseScreen(
                         onLoadSampleData?.let { loadData ->
                             Spacer(modifier = Modifier.height(24.dp))
                             OutlinedButton(onClick = loadData) {
-                                Text("加载示例数据")
+                                Text(stringResource(id = R.string.load_sample_data))
                             }
                         }
                     }
@@ -126,8 +138,8 @@ fun KnowledgeBaseScreen(
     documentToDelete?.let { document ->
         AlertDialog(
             onDismissRequest = { documentToDelete = null },
-            title = { Text("确认删除") },
-            text = { Text("确定要删除「${document.title}」吗？此操作无法撤销。") },
+            title = { Text(stringResource(id = R.string.confirm_delete)) },
+            text = { Text(stringResource(id = R.string.confirm_delete_text, document.title)) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -138,12 +150,12 @@ fun KnowledgeBaseScreen(
                         contentColor = MaterialTheme.colorScheme.error
                     )
                 ) {
-                    Text("删除")
+                    Text(stringResource(id = R.string.delete))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { documentToDelete = null }) {
-                    Text("取消")
+                    Text(stringResource(id = R.string.cancel))
                 }
             }
         )
@@ -190,7 +202,7 @@ fun DocumentCard(
                     ) {
                         Icon(
                             Icons.Default.Edit,
-                            contentDescription = "编辑",
+                            contentDescription = stringResource(id = R.string.edit),
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(20.dp)
                         )
@@ -201,7 +213,7 @@ fun DocumentCard(
                     ) {
                         Icon(
                             Icons.Default.Delete,
-                            contentDescription = "删除",
+                            contentDescription = stringResource(id = R.string.delete),
                             tint = MaterialTheme.colorScheme.error,
                             modifier = Modifier.size(20.dp)
                         )
@@ -222,7 +234,7 @@ fun DocumentCard(
             Spacer(modifier = Modifier.height(8.dp))
             
             Text(
-                text = "更新于 ${dateFormat.format(Date(document.updatedAt))}",
+                text = stringResource(id = R.string.updated_at, dateFormat.format(Date(document.updatedAt))),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
             )
